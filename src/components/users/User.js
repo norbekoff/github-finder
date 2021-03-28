@@ -2,16 +2,19 @@ import React, { Component, Fragment } from 'react';
 import Spinner from '../layout/Spinner';
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types';
+import Repos from '../repos/Repos'
 
 export default class User extends Component {
   componentDidMount() {
     this.props.getUser(this.props.match.params.login);
+    this.props.getRepos(this.props.match.params.login);
   }
 
   static propTypes = {
     user: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
     getUser: PropTypes.func.isRequired,
+    getRepos: PropTypes.func.isRequired,
   }
 
   render() {
@@ -28,9 +31,11 @@ export default class User extends Component {
       following,
       public_repos,
       public_gists,
+      created_at,
       hireable,
     } = this.props.user;
-    const {loading }= this.props
+
+    const {loading, repos }= this.props
     if(loading) return <Spinner />
     
     return (
@@ -65,6 +70,11 @@ export default class User extends Component {
                                 <strong>Website: </strong> {blog}
                             </Fragment>}
                         </li>
+                        <li> {created_at && 
+                            <Fragment>
+                                <strong>Joined: </strong> {created_at.slice(0,4)}
+                            </Fragment>}
+                        </li>
                     </ul>
             </div>
          </div>
@@ -72,8 +82,10 @@ export default class User extends Component {
              <div className="badge badge-primary">Followers: {followers}</div>
              <div className="badge badge-success">Following: {following}</div>
              <div className="badge badge-light">Public Repos: {public_repos}</div>
-             <div className="badge badge-dark">Public Gist: {followers}</div>
+             <div className="badge badge-dark">Public Gist: {public_gists}</div>
          </div>
+
+         <Repos repos={repos} />
      </Fragment>  
     );
   }

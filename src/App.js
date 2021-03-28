@@ -11,6 +11,7 @@ import User from './components/users/User'
 
 class App extends Component {
   state = {
+    repos: [],
     user: {},
     users: [],
     loading: false,
@@ -38,6 +39,15 @@ class App extends Component {
       `https://api.github.com/users/${username}?client_id=${process.env.ID}6client_secret=${process.env.SECRET}`
     );
     this.setState({ user: res.data, loading: false });
+  }
+
+  getRepos = async (username) =>{
+    this.setState({ loading: true });
+    const res = await axios.get(
+      `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.ID}&client_secret=${process.env.SECRET}`
+    );
+    this.setState({ repos: res.data, loading: false });
+    
   }
 
   clear = () => {
@@ -80,7 +90,7 @@ class App extends Component {
 
               <Route path="/about" component={About} />
               <Route exact path="/user/:login" render={(props)=> (
-               <User {...props} getUser={this.getUser} user={this.state.user} loading={this.state.loading} />
+               <User {...props} repos={this.state.repos} getRepos={this.getRepos} getUser={this.getUser} user={this.state.user} loading={this.state.loading} />
               )}/>
             </Switch>
           </div>

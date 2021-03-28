@@ -14,6 +14,7 @@ export class Search extends Component {
     render() {
 
         const handleSubmit = (e) => {
+            
             e.preventDefault();
             if(this.state.text ==='') {
                 this.props.setAlert('Please enter something', 'light')
