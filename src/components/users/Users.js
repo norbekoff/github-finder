@@ -11,7 +11,7 @@ import PropTypes from 'prop-types'
         } else {
             
             return ( 
-                <div style={userStyles} >
+                <div className="grid-3" style={userStyles} >
                     { users.map(user => {
                             return <UserItem key={user.id} user={user} />
                         })}
@@ -30,7 +30,6 @@ Users.protoType = {
 
 const userStyles = {
     display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)',
     gridGap: '20px'
 }
 
